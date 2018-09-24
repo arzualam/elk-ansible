@@ -1,7 +1,0 @@
-- hosts : localhost
-  sudo : yes
-  tasks :
-     - name: uninstall kibana
-       yum:
-         name: kibana
-         state: absent
