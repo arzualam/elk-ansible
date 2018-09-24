@@ -5,7 +5,7 @@
     download_url: http://packages.elastic.co/GPG-KEY-elasticsearch
     kibana_dashboard_url: https://download.elastic.co/beats/dashboards/beats-dashboards-1.1.0.zip
     filebeat_index_url: https://gist.githubusercontent.com/thisismitch/3429023e8438cc25b86c/raw/d8c479e2a1adcea8b1fe86570e42abab0f10f364/filebeat-index-template.json
-
+    script_folder: /home/vagrant
 
 
 
@@ -22,7 +22,7 @@
          key: '{{ download_url }}'
 
      - name: Create new repository for Elastic Search, kibana and Logstash
-       script: /home/vagrant/createrepo.sh
+       script: '{{ script_folder }}'/createrepo.sh
 
      - name : Add the epel repo in YUM
        yum:
@@ -42,12 +42,12 @@
          - filebeat
 
      - name: Edit the Elastic search Configuration file
-       script: /home/vagrant/elastic-config.sh
+       script: '{{ script_folder }}'/elastic-config.sh
 
      - name: Start the Elastic search service
        service:
          name: elasticsearch
-         
+         state: started
 
      - name: Start the Elasticsearch Service once the machine boots
        service:
@@ -56,7 +56,7 @@
           state: started
 
      - name: Edit the Kibana Configuration file
-       script: /home/vagrant/kibana-config.sh
+       script: '{{ script_folder }}'/kibana-config.sh
 
      - name : Start the kibana service
        service:
@@ -69,7 +69,7 @@
           enabled: yes
 
      - name: Configuring Kibana.conf
-       script: /home/vagrant/kibana-setup.sh
+       script: '{{ script_folder }}'/kibana-setup.sh
 
      - name: Start the nginx service
        service: 
@@ -82,10 +82,10 @@
           enabled: yes
 
      - name: Configure the DNS and genarate the SSL Cert and private key
-       script: /home/vagrant/dns-conf.sh
+       script: '{{ script_folder }}'/dns-conf.sh
 
      - name: Configure Logstash
-       script: /home/vagrant/logstash-config.sh
+       script: '{{ script_folder }}'/logstash-config.sh
 
      - name: Check for the Logstash service 
        shell: 'sudo service logstash configtest'
@@ -129,4 +129,17 @@
      - debug: msg='{{ filebeat_templete.stdout }}'
 
      - name: Configure Filebeat.yml
-       script: /home/vagrant/filebeat-config.sh
+       script: '{{ script_folder }}'/filebeat-config.sh
+
+
+     - name: Start the Filebeat service
+       service:
+         name: filebeat
+         state: started
+ 
+     - name: Start the service when the machine boots
+       service: 
+         name: filbeat
+         enabled: yes
+
+
