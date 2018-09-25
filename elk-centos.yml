@@ -87,12 +87,6 @@
      - name: Configure Logstash
        script: '{{ script_folder }}logstash-config.sh'
 
-     - name: Check for the Logstash service 
-       shell: 'sudo service logstash configtest'
-       register: logstasg_status
-    
-     - debug: msg="{{ logstasg_status.stdout }}"
-
      - name: Start the Logstash service
        service: 
           name: logstash 
