@@ -22,7 +22,7 @@
          key: '{{ download_url }}'
 
      - name: Create new repository for Elastic Search, kibana and Logstash
-       script: '{{ script_folder }}'createrepo.sh
+       script: "{{ script_folder }}createrepo.sh"
 
      - name : Add the epel repo in YUM
        yum:
@@ -42,7 +42,7 @@
          - filebeat
 
      - name: Edit the Elastic search Configuration file
-       script: '{{ script_folder }}'elastic-config.sh
+       script: '{{ script_folder }}elastic-config.sh'
 
      - name: Start the Elastic search service
        service:
@@ -56,7 +56,7 @@
           state: started
 
      - name: Edit the Kibana Configuration file
-       script: '{{ script_folder }}'kibana-config.sh
+       script: '{{ script_folder }}kibana-config.sh'
 
      - name : Start the kibana service
        service:
@@ -69,7 +69,7 @@
           enabled: yes
 
      - name: Configuring Kibana.conf
-       script: '{{ script_folder }}'kibana-setup.sh
+       script: '{{ script_folder }}kibana-setup.sh'
 
      - name: Start the nginx service
        service: 
@@ -82,10 +82,10 @@
           enabled: yes
 
      - name: Configure the DNS and genarate the SSL Cert and private key
-       script: '{{ script_folder }}'dns-conf.sh
+       script: '{{ script_folder }}dns-conf.sh'
 
      - name: Configure Logstash
-       script: '{{ script_folder }}'logstash-config.sh
+       script: '{{ script_folder }}logstash-config.sh'
 
      - name: Check for the Logstash service 
        shell: 'sudo service logstash configtest'
@@ -129,7 +129,7 @@
      - debug: msg='{{ filebeat_templete.stdout }}'
 
      - name: Configure Filebeat.yml
-       script: '{{ script_folder }}'filebeat-config.sh
+       script: '{{ script_folder }}filebeat-config.sh'
 
 
      - name: Start the Filebeat service
